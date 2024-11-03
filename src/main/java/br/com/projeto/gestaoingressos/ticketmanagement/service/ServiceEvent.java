@@ -6,6 +6,9 @@ import br.com.projeto.gestaoingressos.ticketmanagement.repository.RepositoryEven
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class ServiceEvent {
@@ -16,8 +19,8 @@ public class ServiceEvent {
         Event event = new Event();
         event.setName(eventDTO.getName());
         event.setLocation(eventDTO.getLocation());
-        event.setStartTime(eventDTO.getStartTime());
-        event.setEndTime(eventDTO.getEndTime());
+        event.setStartTime(LocalDateTime.now());
+        event.setEndTime(LocalDateTime.now().plusDays(5));
         event.setTicketPrice(eventDTO.getTicketPrice());
         event.setAvailableTickets(eventDTO.getAvailableTickets());
 
