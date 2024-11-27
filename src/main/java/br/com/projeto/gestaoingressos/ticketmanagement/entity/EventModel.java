@@ -1,10 +1,7 @@
 package br.com.projeto.gestaoingressos.ticketmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,14 +12,18 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Event {
+@EqualsAndHashCode
+public class EventModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name",nullable = false)
     private String name;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "location",nullable = false)
     private String location;
@@ -36,6 +37,4 @@ public class Event {
     @Column(name = "ticket_price")
     private BigDecimal ticketPrice;
 
-    @Column(name = "available_tickets")
-    private Integer availableTickets;
 }
