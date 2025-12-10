@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +18,7 @@ public class ClienteService {
         Cliente cliente = new Cliente();
         cliente.setNome(dto.getNome());
         cliente.setEmail(dto.getEmail());
+        cliente.setSenha(dto.getSenha());
         Cliente salvo = clienteRepository.save(cliente);
         return toDTO(salvo);
     }
@@ -41,6 +41,9 @@ public class ClienteService {
                 .map(cliente -> {
                     cliente.setNome(dto.getNome());
                     cliente.setEmail(dto.getEmail());
+                    if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
+                        cliente.setSenha(dto.getSenha());
+                    }
                     return toDTO(clienteRepository.save(cliente));
                 })
                 .orElse(null);
@@ -50,12 +53,19 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 
+    public ClienteDTO login(String email, String senha) {
+        return clienteRepository.findByEmail(email)
+                .filter(cliente -> cliente.getSenha().equals(senha))
+                .map(this::toDTO)
+                .orElse(null);
+    }
+
     private ClienteDTO toDTO(Cliente entity) {
         ClienteDTO dto = new ClienteDTO();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
         dto.setEmail(entity.getEmail());
+        dto.setSenha(null);
         return dto;
     }
 }
-

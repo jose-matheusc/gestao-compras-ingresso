@@ -7,8 +7,8 @@ import br.com.projeto.gestaoingressos.ticketmanagement.repository.ItemCarrinhoRe
 import br.com.projeto.gestaoingressos.ticketmanagement.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CarrinhoService {
@@ -48,12 +48,20 @@ public class CarrinhoService {
         itemCarrinhoRepository.deleteAll();
     }
 
+    public BigDecimal calcularTotal() {
+        return itemCarrinhoRepository.findAll()
+                .stream()
+                .map(item -> item.getProduto().getPreco().multiply(BigDecimal.valueOf(item.getQuantidade())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     private ItemCarrinhoDTO toDTO(ItemCarrinho entity) {
         ItemCarrinhoDTO dto = new ItemCarrinhoDTO();
         dto.setId(entity.getId());
         dto.setProdutoId(entity.getProduto().getId());
+        dto.setNomeProduto(entity.getProduto().getNome());
+        dto.setPrecoUnitario(entity.getProduto().getPreco());
         dto.setQuantidade(entity.getQuantidade());
         return dto;
     }
 }
-

@@ -5,6 +5,7 @@ import br.com.projeto.gestaoingressos.ticketmanagement.service.CarrinhoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class CarrinhoController {
         return ResponseEntity.ok(carrinhoService.listar());
     }
 
-    @PostMapping
+    @PostMapping("/adicionar")
     public ResponseEntity<ItemCarrinhoDTO> adicionar(@RequestBody ItemCarrinhoDTO itemDTO) {
         ItemCarrinhoDTO criado = carrinhoService.adicionar(itemDTO);
         return ResponseEntity.ok(criado);
@@ -39,5 +40,10 @@ public class CarrinhoController {
     public ResponseEntity<Void> limpar() {
         carrinhoService.limpar();
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<BigDecimal> total() {
+        return ResponseEntity.ok(carrinhoService.calcularTotal());
     }
 }

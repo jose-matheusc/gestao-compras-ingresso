@@ -22,6 +22,15 @@ public class ClienteController {
         return ResponseEntity.ok(criado);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<ClienteDTO> login(@RequestBody ClienteDTO loginDTO) {
+        ClienteDTO cliente = clienteService.login(loginDTO.getEmail(), loginDTO.getSenha());
+        if (cliente == null) {
+            return ResponseEntity.status(401).build();
+        }
+        return ResponseEntity.ok(cliente);
+    }
+
     @GetMapping
     public ResponseEntity<List<ClienteDTO>> listar() {
         return ResponseEntity.ok(clienteService.listar());
